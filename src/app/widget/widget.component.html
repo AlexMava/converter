@@ -2,22 +2,27 @@
     <h1>Widget Component</h1>
     <form action="" (change)="onChange($event)">
         <div class="field-group" id="field-group-1">
-          <input type="number" id="form-input-1">
-          <select name="" id="form-select-1">
-            <option value="usd">USD</option>
-            <option value="eur">EURO</option>
-            <option value="pln">PLN</option>
-            <option value="uah">UAH</option>
+          <input class="form-input" #inputFirst required type="number" id="form-input-1" value={{inputFirstValue}}
+            (input)="inputFirstValue = +inputFirst.value">
+
+          <select class="form-select" #selectFirst required name="" id="form-select-1" value={{selectFirstValue}}
+          (input)="selectFirstValue = selectFirst.value">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="PLN">PLN</option>
+            <option value="UAH">UAH</option>
           </select>
         </div>
 
         <div class="field-group" id="field-group-2">
-          <input type="number" id="form-input-2" value={{inputTwoValue}}>
-          <select name="" id="form-select-2">
-            <option value="usd">USD</option>
-            <option value="eur">EURO</option>
-            <option value="pln">PLN</option>
-            <option value="uah">UAH</option>
+          <input class="form-input" #inputSecond required type="number" id="form-input-2"
+          (input)="inputSecondValue = +inputSecond.value" value={{inputSecondValue}}>
+
+          <select class="form-select" required name="" id="form-select-2" value={{selectSecondValue}}>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="PLN">PLN</option>
+            <option value="UAH">UAH</option>
           </select>
         </div>
       </form>
