@@ -1,0 +1,16 @@
+<div class="header-inner">
+  <div class="header-title-outer">
+    <h1>{{title}}</h1>
+  </div>
+
+  <div class="header-rates">
+    <h4>UAH Official Exchange Rates:</h4>
+
+    <ul class="">
+      <li *ngFor="let currency of rates">
+        <strong class="currency-name">{{currency['txt']}}: </strong>
+        <span class="currency-rate">{{currency['rate']}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
