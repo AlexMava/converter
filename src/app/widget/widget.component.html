@@ -1,29 +1,36 @@
 <div class="">
     <h1>Widget Component</h1>
     <form action="" (change)="onChange($event)">
-        <div class="field-group" id="field-group-1">
-          <input class="form-input" #inputFirst required type="number" id="form-input-1" value={{inputFirstValue}}
-            (input)="inputFirstValue = +inputFirst.value">
+        <p class="field-group js-field-group" id="field-group-1">
+          <input class="form-input" #inputFirst required type="number" id="form-input-1" min="0"
+            value={{inputFirstValue}}
+            (input)="inputFirstValue = +inputFirst.value"
+            (input)="onChange($event)">
 
-          <select class="form-select" #selectFirst required name="" id="form-select-1" value={{selectFirstValue}}
+          <select class="form-select" #selectFirst required name="" id="form-select-1" value={{selectFirstValue}}          
           (input)="selectFirstValue = selectFirst.value">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="PLN">PLN</option>
-            <option value="UAH">UAH</option>
-          </select>
-        </div>
+            <option *ngFor="let currency of rates" [value]="currency['cc']">
+              {{currency['cc']}}
+            </option>
 
-        <div class="field-group" id="field-group-2">
-          <input class="form-input" #inputSecond required type="number" id="form-input-2"
-          (input)="inputSecondValue = +inputSecond.value" value={{inputSecondValue}}>
+            <option disabled value="UAH">UAH</option>
+          </select>
+        </p>
+
+        <p class="field-group js-field-group" id="field-group-2">
+          <input class="form-input" #inputSecond required type="number" id="form-input-2" min="0"
+          value={{inputSecondValue}}
+          (input)="inputSecondValue = +inputSecond.value"
+          (input)="onChange($event)">
 
           <select class="form-select" required name="" id="form-select-2" value={{selectSecondValue}}>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="PLN">PLN</option>
+            <option disabled *ngFor="let currency of rates" [value]="currency['cc']">
+              {{currency['cc']}}
+            </option>
+
             <option value="UAH">UAH</option>
           </select>
-        </div>
+        </p>
       </form>
 </div>
+<!-- FormGroup -->
