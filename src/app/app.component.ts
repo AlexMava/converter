@@ -20,11 +20,8 @@ export class AppComponent {
   loading: boolean = false;
   error: boolean = false;
 
-  names = ['Dr. IQ', '   ', '  Bombasto  '];
-
   onDataLoaded = (newData: any) => {
     this.rates = newData;
-    // console.log(this.rates);
   }
 
   ngOnInit() { 
