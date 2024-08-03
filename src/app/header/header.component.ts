@@ -13,5 +13,5 @@ import { Currency } from '../currency';
 export class HeaderComponent {
   title = 'Logo goes here';
 
-  @Input() rates = [];
+  @Input() rates: Currency[] = [];
 }

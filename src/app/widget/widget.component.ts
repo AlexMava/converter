@@ -10,7 +10,7 @@ import { NgFor } from '@angular/common';
   styleUrl: './widget.component.css'
 })
 export class WidgetComponent {
-  @Input() rates: any;
+  @Input() rates: Currency[] = [];
 
   inputFirstValue: number = 0;
   inputSecondValue: number = 0;

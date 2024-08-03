@@ -1,10 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { WidgetComponent } from './widget/widget.component';
 import { HeaderComponent } from './header/header.component';
-import ConverterService from './converter.service'
 
-const exchangeService = new ConverterService();  
+import { CurrencyService } from './currency.service';
+import { Currency } from "./currency";
 
 @Component({
   selector: 'app-root',
@@ -15,22 +15,22 @@ const exchangeService = new ConverterService();
 })
 
 export class AppComponent {
-  title = 'converter';
-  rates = [];
+  title: string = 'converter';
+  rates: Currency[] = [];
   loading: boolean = false;
   error: boolean = false;
 
-  onDataLoaded = (newData: any) => {
-    this.rates = newData;
+  constructor(private currencyService: CurrencyService) { }
+
+  getRates(): void {
+    this.currencyService.getCurrencies().subscribe(rates => this.rates = this.filterRates(rates));
   }
 
-  ngOnInit() { 
-    exchangeService.getAllRates()
-      .then(this.onDataLoaded)
-      .catch(() => console.log('Error by saving data to the state'))
+  ngOnInit(): void { 
+    this.getRates();
   };
 
-  getRate() {
-    // this.rates = 8;
+  filterRates(allItems: Currency[]) {
+    return allItems.filter((item: Currency) => (item['cc'] === 'USD') || item['cc'] === 'EUR' || item['cc'] === 'PLN');
   }
 }
