@@ -1,36 +1,9 @@
-<div class="">
-    <h1>Widget Component</h1>
-    <form action="" (change)="onChange($event)">
-        <p class="field-group js-field-group" id="field-group-1">
-          <input class="form-input" #inputFirst required type="number" id="form-input-1" min="0"
-            value={{inputFirstValue}}
-            (input)="inputFirstValue = +inputFirst.value"
-            (input)="onChange($event)">
+<div class="form-wrapper">
+    <h1>{{title}}</h1>
 
-          <select class="form-select" #selectFirst required name="" id="form-select-1" value={{selectFirstValue}}          
-          (input)="selectFirstValue = selectFirst.value">
-            <option *ngFor="let currency of rates" [value]="currency['cc']">
-              {{currency['cc']}}
-            </option>
+    <form (change)="onChange($event)" [formGroup]="theForm">
+          <app-group [rates]="rates" formGroupName="firstGroup"></app-group>
 
-            <option disabled value="UAH">UAH</option>
-          </select>
-        </p>
-
-        <p class="field-group js-field-group" id="field-group-2">
-          <input class="form-input" #inputSecond required type="number" id="form-input-2" min="0"
-          value={{inputSecondValue}}
-          (input)="inputSecondValue = +inputSecond.value"
-          (input)="onChange($event)">
-
-          <select class="form-select" required name="" id="form-select-2" value={{selectSecondValue}}>
-            <option disabled *ngFor="let currency of rates" [value]="currency['cc']">
-              {{currency['cc']}}
-            </option>
-
-            <option value="UAH">UAH</option>
-          </select>
-        </p>
+          <app-group [rates]="rates" formGroupName="secondGroup"></app-group>
       </form>
 </div>
-<!-- FormGroup -->
