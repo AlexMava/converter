@@ -1,9 +1,9 @@
 <ng-container [formGroup]="form">
     <p class="field-group js-field-group" id={{formGroupName}}>
-        <input class="form-input {{formGroupName}}" required type="number" id="input-{{formGroupName}}" min="0"
+        <input class="form-input {{formGroupName}}" type="number" id="input-{{formGroupName}}" min="0"
         formControlName="inputValue">
 
-        <select class="form-select {{formGroupName}}" #selectFirst required name="" id="select-{{formGroupName}}"
+        <select class="form-select {{formGroupName}}" name="" id="select-{{formGroupName}}"
             formControlName="selectValue">
             <option value="UAH">UAH</option>
             <option *ngFor="let currency of rates" [value]="currency['cc']">
