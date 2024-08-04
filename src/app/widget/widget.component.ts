@@ -1,9 +1,10 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { NgFor } from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 
 import { Currency } from '../currency';
 import { GroupComponent } from './group/group.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-widget',
@@ -13,7 +14,7 @@ import { GroupComponent } from './group/group.component';
   styleUrl: './widget.component.css',
 })
 
-export class WidgetComponent {
+export class WidgetComponent implements OnInit {
 
   title: string = 'Currency converter';
   @Input() rates: Currency[] = [];
@@ -33,57 +34,43 @@ export class WidgetComponent {
     });
   }
 
-  onChange(e: any) {
-    const inputFirstValue: number = this.theForm.value['firstGroup']['inputValue'],
-    inputSecondValue: number = this.theForm.value['secondGroup']['inputValue'],
-    selectFirstValue: string = this.theForm.value['firstGroup']['selectValue'],
-    selectSecondValue: string = this.theForm.value['secondGroup']['selectValue'];
-
+  ngOnInit(): void {
     let theCurrency: Currency[] = [];
 
-    let activeGroup!: string,
-      fromValue!: number,
-      fromCurrency!: string,
-      // toValue!: number,
-      toCurrency!: string,
-      normalOrder: boolean = true,
-      thisRate: number = 1;
+    let normalOrder: boolean = true,
+    thisRate: number = 1;
+    
+    this.theForm.controls["firstGroup"].valueChanges.subscribe((val) => {
+      // console.log(this.theForm.value);
+      if (val['selectValue'] === 'UAH') {
+        normalOrder = false;
 
-    if (e.target.classList.contains('firstGroup')) {
-      activeGroup = 'firstGroup';
-      fromValue = inputFirstValue;
-      fromCurrency = selectFirstValue;
-      toCurrency = selectSecondValue
-    } else if (e.target.classList.contains('secondGroup')) {
-      activeGroup = 'secondGroup';
-      fromValue = inputSecondValue;
-      fromCurrency = selectSecondValue;
-      toCurrency = selectFirstValue
-    }
+        theCurrency = this.rates.filter((item: Currency) => (item['cc'] === this.theForm.value['secondGroup']['selectValue']));
+        thisRate = 1 / theCurrency[0]['rate'];           
+      } else {
+        theCurrency = this.rates.filter((item: Currency) => (item['cc'] === val['selectValue']));
+        thisRate = theCurrency[0]['rate'];
+      }
 
-    normalOrder = fromCurrency === 'UAH' ? false : true;
-
-    if (normalOrder === true) {
-      theCurrency = this.rates.filter((item: Currency) => (item['cc'] === fromCurrency));
-      thisRate = theCurrency[0]['rate'];
-    } else if (normalOrder === false) {
-      theCurrency = this.rates.filter((item: Currency) => (item['cc'] === toCurrency));
-      thisRate = 1 / theCurrency[0]['rate'];
-    }
- 
-    // console.log('from: ', fromValue, fromCurrency, 'to: ', toCurrency, fromValue * thisRate);
-
-    // console.log(normalOrder, activeGroup, 'from: ', fromValue, fromCurrency, 'to: ', toCurrency, 'rate: ', thisRate);
-
-    if (e.target.classList.contains('firstGroup')) {      
       this.theForm.patchValue({
-        secondGroup: { inputValue:  (fromValue * thisRate).toFixed(2)}});
-    } else if (e.target.classList.contains('secondGroup')) {    
-        this.theForm.patchValue({
-          firstGroup: { inputValue:  (fromValue * thisRate).toFixed(2)}});
-    }
+        secondGroup: { inputValue:  (val['inputValue'] * thisRate).toFixed(2)}
+      }, {emitEvent: false, onlySelf: true});   
+    })
 
-    // console.log(this.theForm.value);
+    this.theForm.controls["secondGroup"].valueChanges.subscribe((val) => { 
+      if (val['selectValue'] === 'UAH') {
+        normalOrder = false;
+
+        theCurrency = this.rates.filter((item: Currency) => (item['cc'] === this.theForm.value['firstGroup']['selectValue']));
+        thisRate = 1 / theCurrency[0]['rate'];           
+      } else {
+        theCurrency = this.rates.filter((item: Currency) => (item['cc'] === val['selectValue']));
+        thisRate = theCurrency[0]['rate'];
+      }
+
+      this.theForm.patchValue({
+        firstGroup: { inputValue:  (val['inputValue'] * thisRate).toFixed(2)}
+      }, {emitEvent: false, onlySelf: true});  
+    })
   }
-
 }

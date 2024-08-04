@@ -1,7 +1,7 @@
 <div class="form-wrapper">
     <h1>{{title}}</h1>
 
-    <form (change)="onChange($event)" [formGroup]="theForm">
+    <form [formGroup]="theForm">
         <app-group [rates]="rates" formGroupName="firstGroup"></app-group>
 
         <app-group [rates]="rates" formGroupName="secondGroup"></app-group>
